@@ -34,6 +34,40 @@ var_dump("12.29");
 $dados = ['NoNamed', 99, 'Azkaban'];
 var_dump($dados[0]);
 
+?>
 
+/** Operadores aritmeticos */
+<?php
+$itemA = 10;
+$itemB = 20;
+
+$itemC = $itemA + $itemB; //Soma
+$itemD = $itemA - $itemB; //Subtracao
+$itemE = $itemA * $itemB; //Multiplicacao
+$itemF = $itemA / $itemB; //Divisao
+$itemG = $itemA % $itemB; //Resto da divisao
+
+echo $itemC . PHP_EOL;
+?>
+
+/** Operadores de atribuicao */
+<?php
+$itemA = 10;
+$itemB = 20;
+
+$itemC += $itemA + $itemB; //Soma
+$itemD -= $itemA - $itemB; //Subtracao
+$itemE *= $itemA * $itemB; //Multiplicacao
+$itemF /= $itemA / $itemB; //Divisao
+$itemG %= $itemA % $itemB; //Resto da divisao
+
+?>
+
+//Operadores de Comparacao
+<?php
+var_dump( 1 == 1);
+var_dump(1 != 1);
+var_dump(1 >= 1);
+var_dump(1<= 1);
 
 ?>
