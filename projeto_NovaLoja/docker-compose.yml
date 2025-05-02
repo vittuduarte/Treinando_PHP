@@ -1,0 +1,66 @@
+services:
+    sistema_gestao:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        networks:
+            - sistema-gestao-network
+    # nginx
+    nginx:
+        container_name: servidor-nginx
+        image: nginx:alpine
+        restart: unless-stopped
+        ports:
+            - "8989:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        networks:
+            - sistema-gestao-network
+     # db postgreSQL ${DB_DATABASE} //Busca do arquivo .env
+    postgres:
+        container_name: banco-postgres
+        image: postgres:15
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - ./.docker/postgres/dbdata:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        networks:
+            - sistema-gestao-network
+
+
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: pgadmin
+        restart: always
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@admin.com
+            PGADMIN_DEFAULT_PASSWORD: admin
+        ports:
+            - "8899:80"
+        networks:
+            - sistema-gestao-network
+
+
+networks:
+    sistema-gestao-network:
+        driver: bridge
+
+#Doc. de utilizacao
+# para acessar phpmyadmin no navegador: http://localhost:8899/ -  e a porta
+# para acessar nginx(servidor) no navegador: http://localhost:8989/ - e a porta
+
+#PHPMYADMIN info no file
+# servidor: mysql
+# user: root
+# pass: root
+
