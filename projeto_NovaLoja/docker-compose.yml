@@ -21,35 +21,35 @@ services:
             - ./docker/nginx/:/etc/nginx/conf.d/
         networks:
             - sistema-gestao-network
-     # db postgreSQL ${DB_DATABASE} //Busca do arquivo .env
-    postgres:
-        container_name: banco-postgres
-        image: postgres:15
+     # db mysql ${DB_DATABASE} //Busca do arquivo .env
+    mysql:
+        container_name: banco-mysql
+        image: mysql:5.7.22
         restart: unless-stopped
         environment:
-            POSTGRES_DB: ${DB_DATABASE}
-            POSTGRES_USER: ${DB_USERNAME}
-            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
         volumes:
-            - ./.docker/postgres/dbdata:/var/lib/postgresql/data
+            - ./.docker/mysql/dbdata:/var/lib/mysql
         ports:
-            - "5432:5432"
+            - "3388:3306"
         networks:
-            - sistema-gestao-network
+            - sistema-getao-network
 
-
-    pgadmin:
-        image: dpage/pgadmin4
-        container_name: pgadmin
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        links:
+            - mysql
         restart: always
         environment:
-            PGADMIN_DEFAULT_EMAIL: admin@admin.com
-            PGADMIN_DEFAULT_PASSWORD: admin
+            - PMA_ARBITRARY=1
         ports:
-            - "8899:80"
+            - 8899:80
         networks:
             - sistema-gestao-network
-
 
 networks:
     sistema-gestao-network:
